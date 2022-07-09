@@ -37,19 +37,33 @@ class _FavoritePostsWidgetState extends State<FavoritePostsWidget> {
       List<PostModel> favoritePostsList =
           state.where((element) => element.isFavorite == true).toList();
 
-      return ListView.builder(
-        shrinkWrap: true,
-        itemCount: favoritePostsList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return CardWidget(
-            postModel: favoritePostsList[index],
-            toggleFavorite: () {
-              context
-                  .cubit<PostCubitController>()
-                  .toggleFavorite(favoritePostsList[index]);
-            },
-          );
-        },
+      return SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text(
+                "Total: ${favoritePostsList.length}",
+                style: const TextStyle(fontSize: 20.0),
+              ),
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: favoritePostsList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return CardWidget(
+                  postModel: favoritePostsList[index],
+                  toggleFavorite: () {
+                    context
+                        .cubit<PostCubitController>()
+                        .toggleFavorite(favoritePostsList[index]);
+                  },
+                );
+              },
+            ),
+          ],
+        ),
       );
     });
   }

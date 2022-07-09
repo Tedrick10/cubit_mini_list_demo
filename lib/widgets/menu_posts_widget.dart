@@ -31,7 +31,7 @@ class _MenuPostsWidgetState extends State<MenuPostsWidget> {
   // Lifecycle: Override Class Methods
   @override
   void initState() {
-    context.cubit<PostCubitController>().backdropChanged();
+    context.cubit<PostCubitController>().getPosts();
     super.initState();
   }
 
@@ -41,17 +41,33 @@ class _MenuPostsWidgetState extends State<MenuPostsWidget> {
     // Returning Widgets
     return CubitBuilder<PostCubitController, List<PostModel>>(
         builder: (BuildContext context, List<PostModel> state) {
-      return ListView.builder(
-        shrinkWrap: true,
-        itemCount: state.length,
-        itemBuilder: (BuildContext context, int index) {
-          return CardWidget(
-            postModel: state[index],
-            toggleFavorite: () {
-              context.cubit<PostCubitController>().toggleFavorite(state[index]);
-            },
-          );
-        },
+      return SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text(
+                "Total: ${state.length}",
+                style: const TextStyle(fontSize: 20.0),
+              ),
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: state.length,
+              itemBuilder: (BuildContext context, int index) {
+                return CardWidget(
+                  postModel: state[index],
+                  toggleFavorite: () {
+                    context
+                        .cubit<PostCubitController>()
+                        .toggleFavorite(state[index]);
+                  },
+                );
+              },
+            ),
+          ],
+        ),
       );
     });
   }

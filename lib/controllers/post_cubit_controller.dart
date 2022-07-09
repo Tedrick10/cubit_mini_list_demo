@@ -11,10 +11,12 @@ import '../apis/post_api_provider.dart';
 // PostCubitController: Controller Class
 class PostCubitController extends Cubit<List<PostModel>> {
   // Constructor
+  // Initialize the empty array in constructor
   PostCubitController() : super([]);
 
   // Action: Class Methods
-  Future<void> backdropChanged() async {
+  // Fetch posts from API
+  Future<void> getPosts() async {
     PostAPIProvider postAPIProvider = PostAPIProvider();
     List<PostModel> postsList = await postAPIProvider.getPosts();
     if (state.isEmpty) {
@@ -22,6 +24,7 @@ class PostCubitController extends Cubit<List<PostModel>> {
     }
   }
 
+  // To select or not to add in favorite section
   void toggleFavorite(PostModel postModel) {
     List<PostModel> tempPostModel = state;
     int index = tempPostModel
